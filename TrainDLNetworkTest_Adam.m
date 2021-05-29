@@ -42,7 +42,7 @@ for epoch = 1:numEpochs
         [gradients,state,loss] = dlfeval(@modelGradients,dlnet,dlX,dlY);
         dlnet.State = state;        
       
-        % Update the network parameters using the SGDM optimizer.
+        
         [dlnet,averageGrad,averageSqGrad] = adamupdate(dlnet,gradients,averageGrad,averageSqGrad,iteration);
         
         % Display the training progress.

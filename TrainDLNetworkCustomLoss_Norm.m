@@ -1,4 +1,14 @@
 
+[~, input, target] = PrepareData(true, true, true, false);
+
+inputsT = input.';
+targetsT = target.';
+
+[~, eva12, eva345] = PrepareData(false, false, true, false);
+
+inputsE = eva12.';
+targetsE = eva345.';
+
 lgraph = BuildTrackNetV2Model(false);
 
 X = randn(6,5);

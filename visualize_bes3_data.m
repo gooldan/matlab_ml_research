@@ -15,7 +15,7 @@ function pc_Draw(xyz, color, size)
 end
 
 %data = readtable("C:\Users\egor\dubna\ariadne\data_bes3\210.txt"
-data = ReadBES3Data(true, true);
+data = ReadBES3Data(true, true, false);
 
 %figure;
 %pcshow([data.x,data.y,data.z]);

@@ -98,7 +98,7 @@ yT = Y(2, :);
 ellipse_center_loss = mean((((xPred - xT) ./ r1Corr).^2 + ((yPred - yT) ./ r2Corr).^2).^(0.5));
 
 ellipse_square_loss = sum(r1Corr .* r2Corr);
-mse_o = mse(dlYPred(1:2, :), Y(1:2, :));
+mse_o = mse(dlYPred(1:2, :), [Y(1, :); Y(3, :)]);
 
 loss = ellipse_square_loss + ellipse_center_loss;
 
