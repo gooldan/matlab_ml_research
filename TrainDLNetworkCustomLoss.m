@@ -40,7 +40,7 @@ for epoch = 1:numEpochs
         iteration = iteration + 1;
         
         % Read mini-batch of data.
-        [dlX, dlY] = getData(counter,BATCH_SIZE);
+        [dlX, dlY, counter] = getData(inputsT, targetsT, counter,BATCH_SIZE);
         
         % Evaluate the model gradients, state, and loss using dlfeval and the
         % modelGradients function and update the network state.
@@ -62,19 +62,19 @@ for epoch = 1:numEpochs
     end
 end
 
-function [X, Y, counter] = getData(counter, BATCH_SIZE)
+function [X, Y, counter] = getData(inputs, targets, counter, BATCH_SIZE)
 
 function [X, Y] = nextData(arrX, arrY, off)
     X = dlarray(arrX(:, off:off+BATCH_SIZE), "CB");
     Y = dlarray(arrY(:, off:off+BATCH_SIZE), "CB");
 end
 
-    if counter + BATCH_SIZE >= size(inputsT,2)
+    if counter + BATCH_SIZE >= size(inputs,2)
         counter = 1;
     else
         counter = counter + BATCH_SIZE;
     end
-    [X, Y] = nextData(inputsT, targetsT, counter);
+    [X, Y] = nextData(inputs, targets, counter);
 end
 
 
@@ -89,15 +89,15 @@ yPred = dlYPred(2, :);
 r1Pred = (dlYPred(3, :));
 r2Pred = (dlYPred(4, :));
 
-r1Corr = exp(r1Pred / max(r1Pred));
-r2Corr = exp(r2Pred / max(r2Pred));
+r1Corr = log(1 + exp(r1Pred));
+r2Corr = log(1 + exp(r2Pred));
 
 xT = Y(1, :);
 yT = Y(2, :);
 
 ellipse_center_loss = mean((((xPred - xT) ./ r1Corr).^2 + ((yPred - yT) ./ r2Corr).^2).^(0.5));
 
-ellipse_square_loss = sum(r1Pred .* r2Pred);
+ellipse_square_loss = sum(r1Corr .* r2Corr);
 mse_o = mse(dlYPred(1:2, :), Y(1:2, :));
 
 loss = ellipse_square_loss + ellipse_center_loss;
