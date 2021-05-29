@@ -1,21 +1,18 @@
+function [dataset, inputs, targets] = PrepareData(isTrain, isShort)
 
-data = ReadBES3Data("C:\Users\egor\dubna\ariadne\data_bes3\210.txt");
+data = ReadBES3Data(isTrain, isShort);
 
-G = findgroups(data.event);
-
-global dataset;
 dataset = zeros(size(data, 1), 11);
 
-global dataId
 dataId = 1;
 
 GroupApply("event", data, @EventIterate);
 
 dataset = dataset(1:dataId-1, :);
+inputs = dataset(:, 3:end-3);
+targets = dataset(:, end-2:end);
 
 function AddToDataset(event_id, group, slice)
-    global dataId
-    global dataset
     if (group ~= -1) && (size(slice, 1) == 3)
         dataset(dataId, 1) = event_id;
         dataset(dataId, 2) = group;
@@ -28,4 +25,5 @@ function EventIterate(event_id, single_event)
     GroupApply("track", single_event, PartialFunc(@AddToDataset, event_id));
 end
 
+end
 
