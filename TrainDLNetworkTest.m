@@ -1,3 +1,7 @@
+[~, input, target] = PrepareData(true, true, false, false);
+
+inputsT = input';
+targetsT = target';
 
 lgraph = BuildTrackNetV2Model(false);
 
@@ -69,7 +73,7 @@ function [gradients,state,loss] = modelGradients(dlnet,dlX,Y)
 
 [dlYPred,state] = forward(dlnet,dlX);
 
-loss = mse(dlYPred(1:2, :), Y(1:2, :));
+loss = mse(dlYPred(1:2, :), [Y(1, :); Y(3, :)]);
 gradients = dlgradient(loss,dlnet.Learnables);
 
 loss = double(gather(extractdata(loss)));

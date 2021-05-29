@@ -8,6 +8,8 @@
 %   input - input data.
 %   target - target data.
 
+[~, input, target] = PrepareData(true, true, false, false);
+
 x = input';
 t = target';
 
